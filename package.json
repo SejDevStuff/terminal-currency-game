@@ -1,0 +1,15 @@
+{
+  "name": "terminal-economy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "SejDevStuff",
+  "license": "ISC",
+  "devDependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
