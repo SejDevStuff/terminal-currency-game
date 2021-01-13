@@ -1,2 +1,6 @@
+# Standard node stuff
 node_modules/
 package-lock.json
+
+# Error folder made by program
+errors/

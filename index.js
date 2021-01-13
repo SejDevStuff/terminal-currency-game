@@ -33,7 +33,17 @@ function _prompt() {
     if (command.trim() == "") {
         return _prompt();
     }
-    parser.parseCommand(command.trim());
+    if (command.trim() == "exit" || command.trim() == "bye" || command.trim() == "stop" || command.trim() == "end") {
+        console.log("Goodbye!");
+        process.exit()
+    }
+    if (showDebug) {
+        tools.log("Attempting to parse '"+ command.trim() + "'...");
+    }
+    parser.parseCommand(command.trim(), showDebug);
+    if (showDebug) {
+        tools.log("Parse successful, actions have been taken. Returning to prompt...");
+    }
     return _prompt();
 }
 

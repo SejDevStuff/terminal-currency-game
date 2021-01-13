@@ -41,7 +41,8 @@ function error(msg) {
     var callerFile = callerFile.replace(process.cwd(), "")
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    console.log("\n[ERROR] Called by "+ callerFile +" at "+ time + "\n"+msg);
+    console.error("\n[ERROR] Called by "+ callerFile +" at "+ time); 
+    console.log(msg);
 }
 
 function input(inputMsg) {
