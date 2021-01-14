@@ -19,6 +19,11 @@ if (configFile.SHOW_DEBUG_MESSAGES == true) {
     var showDebug = false;
 }
 
+if (configFile.CHECK_FOR_UPDATES == true) {
+    console.log("Checking for updates...");
+    tools.checkForUpdates();
+}
+
 if (configFile.USERNAME.trim() == "") {
     console.log("Please go to '"+ process.cwd() + "/config.json' and set a username!");
     process.exit();

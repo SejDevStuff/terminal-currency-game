@@ -70,11 +70,16 @@ function getDateTime() {
     return date + "_" + time;
 }
 
+function checkForUpdates() {
+    
+}
+
 module.exports = {
     log,
     input,
     getConfigFile,
     error,
     getAlphaNumericString,
-    getDateTime
+    getDateTime,
+    checkForUpdates
 }
