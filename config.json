@@ -1,4 +1,5 @@
 {
     "SHOW_DEBUG_MESSAGES":false,
+    "CHECK_FOR_UPDATES":true,
     "USERNAME":"tst"
 }
