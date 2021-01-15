@@ -1,13 +1,14 @@
 /*
-    JS Shell 
+    Terminal Economy
     (c) Copyright 2021 Sej
 
     File name: tools.js
-    File desc: Tools for the shell
+    File desc: Tools for the game
 */
 const prompt = require('prompt-sync')();
 const fs = require('fs');
 const { config } = require('process');
+const fetch = require('node-fetch')
 
 function _getCallerFile() {
     try {
@@ -41,7 +42,7 @@ function error(msg) {
     var callerFile = callerFile.replace(process.cwd(), "")
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    console.error("\n[ERROR] Called by "+ callerFile +" at "+ time); 
+    console.error("\n[ERROR] Called by "+ callerFile +" at timeStamp "+ time); 
     console.log(msg);
 }
 
@@ -70,8 +71,36 @@ function getDateTime() {
     return date + "_" + time;
 }
 
-function checkForUpdates() {
-    
+function tmpInit() {
+    if (fs.existsSync("./.tmp/")) {
+        // ok
+    } else {
+        fs.mkdirSync("./.tmp/");
+    }
+}
+
+async function downloadVerFile() {
+    tmpInit();
+    var verfileURL = "https://raw.githubusercontent.com/SejDevStuff/terminal-currency-game/main/verfile.json";
+    await fetch(verfileURL)
+    .then(res => res.text())
+    .then(text => {fs.writeFileSync("./.tmp/latest-verfile.json", text)})
+}
+
+async function enableMultiplayer() {
+    tmpInit();
+    const multiplayerCache = {
+        multiplayerEnabled: true
+    };
+    fs.writeFileSync("./.tmp/multiplayerCache.json", JSON.stringify(multiplayerCache));
+}
+
+async function disableMultiplayer() {
+    tmpInit();
+    const multiplayerCache = {
+        multiplayerEnabled: false
+    };
+    fs.writeFileSync("./.tmp/multiplayerCache.json", JSON.stringify(multiplayerCache));
 }
 
 module.exports = {
@@ -81,5 +110,7 @@ module.exports = {
     error,
     getAlphaNumericString,
     getDateTime,
-    checkForUpdates
+    downloadVerFile,
+    disableMultiplayer,
+    enableMultiplayer
 }

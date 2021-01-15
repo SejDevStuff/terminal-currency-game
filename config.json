@@ -1,5 +1,6 @@
 {
     "SHOW_DEBUG_MESSAGES":false,
     "CHECK_FOR_UPDATES":true,
-    "USERNAME":"tst"
+    "START_WITH_MULTIPLAYER":true,
+    "USERNAME":"bet"
 }

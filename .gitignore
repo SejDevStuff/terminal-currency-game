@@ -4,3 +4,6 @@ package-lock.json
 
 # Error folder made by program
 errors/
+
+# .tmp folder
+.tmp/

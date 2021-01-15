@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "prompt-sync": "^4.2.0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
   }
 }
