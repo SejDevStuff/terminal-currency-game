@@ -9,7 +9,8 @@ var tools = require('./tools');
 var configFile = tools.getConfigFile();
 const fs = require('fs');
 const parser = require('./game/parser');
-const programVersionString = "1.0.0";
+const { DH_CHECK_P_NOT_PRIME } = require('constants');
+const programVersionString = tools.returnVersionString();
 if (configFile.SHOW_DEBUG_MESSAGES == true) {
     tools.log("Debug messages are set to TRUE.");
     var showDebug = true;
@@ -79,7 +80,22 @@ function mainBody() {
             if (command.trim() == "") {
                 return _prompt();
             }
+            if (command.trim() == "enableDebug") {
+                if (showDebug == true) { console.log("Nothing changed, debug is already on."); return _prompt();}
+                showDebug = true;
+                console.log("Debug mode: ON");
+                return _prompt();
+            }
+            if (command.trim() == "disableDebug") {
+                if (showDebug == false) { console.log("Nothing changed, debug is already off."); return _prompt();}
+                showDebug = false;
+                console.log("Debug mode: OFF");
+                return _prompt();
+            }
             if (command.trim() == "exit" || command.trim() == "bye" || command.trim() == "stop" || command.trim() == "end") {
+                if (showDebug) { tools.log("Running shutdown processes...") };
+                tools.runShutdownProcesses();
+                if (showDebug) { tools.log("Finished running all processes! Ending game...") };
                 console.log("Goodbye!");
                 process.exit()
             }

@@ -9,6 +9,20 @@ const prompt = require('prompt-sync')();
 const fs = require('fs');
 const { config } = require('process');
 const fetch = require('node-fetch')
+const programVersionString = "1.0.0";
+
+function runShutdownProcesses(debug) {
+    if (debug) {
+        log("Shutdown command recieved!");
+    }
+    if (fs.existsSync(process.cwd() + "/.tmp/")) {
+        fs.rmdirSync(process.cwd() + "/.tmp/", { recursive: true });
+    }
+}
+
+function returnVersionString() {
+    return programVersionString;
+}
 
 function _getCallerFile() {
     try {
@@ -112,5 +126,7 @@ module.exports = {
     getDateTime,
     downloadVerFile,
     disableMultiplayer,
-    enableMultiplayer
+    enableMultiplayer,
+    returnVersionString,
+    runShutdownProcesses
 }
