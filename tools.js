@@ -85,6 +85,14 @@ function getDateTime() {
     return date + "_" + time;
 }
 
+function initDir(dirName) {
+    if (fs.existsSync(dirName)) {
+        // ok
+    } else {
+        fs.mkdirSync(dirName);
+    }
+}
+
 function tmpInit() {
     if (fs.existsSync("./.tmp/")) {
         // ok
@@ -99,6 +107,14 @@ async function downloadVerFile() {
     await fetch(verfileURL)
     .then(res => res.text())
     .then(text => {fs.writeFileSync("./.tmp/latest-verfile.json", text)})
+}
+
+async function downloadUpdateArchive() {
+    tmpInit();
+    var verfileURL = "https://raw.githubusercontent.com/SejDevStuff/terminal-currency-game/main/update.zip";
+    await fetch(verfileURL)
+    .then(res => res.text())
+    .then(text => {fs.writeFileSync("./.tmp/update.zip", text)})
 }
 
 async function enableMultiplayer() {
@@ -128,5 +144,7 @@ module.exports = {
     disableMultiplayer,
     enableMultiplayer,
     returnVersionString,
-    runShutdownProcesses
+    runShutdownProcesses,
+    downloadUpdateArchive,
+    initDir
 }
