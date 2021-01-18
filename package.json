@@ -13,6 +13,7 @@
     "prompt-sync": "^4.2.0"
   },
   "dependencies": {
+    "extract-zip": "^2.0.1",
     "node-fetch": "^2.6.1"
   }
 }

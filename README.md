@@ -8,3 +8,8 @@ DO NOT download this by cloning the repo, repo commits always tend to have some 
 
 ## Want to test it out?
 Please wait until we pass the beta versions and go to v1.0.0, where a release will be made [here](https://github.com/SejDevStuff/terminal-currency-game/releases)
+
+## Update History
+```
+18/01/2021 - Beta 1.4.0: Working 'update' command
+```

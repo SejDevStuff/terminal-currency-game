@@ -1,6 +1,11 @@
 # Terminal game commands
-These commands are stored by order of creation, with the oldest command at the bottom and the newest at the top.
+These commands are stored by no specific order.
 ---
+### update
+Update automatically downloads the latest update archive and then backs up all files that it will change, when this is successful it proceeds to replace files with newer versions and create new files if necessary.
+Optional arguments: "--skip-download" will skip the download if you have your own update.zip file.
+NOTICE: update.zip is not an ordinary file and it requires a properly configured file-list else the update will fail or corrupt your installation, unless you are a pro, refrain using the "--skip-download" argument.
+
 ### mp
 mp is short for "multiplayer", it tweaks the multiplayer options.
 If you do "mp e" it will enable multiplayer and if you do "mp d" it will disable it

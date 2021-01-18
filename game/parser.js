@@ -1,4 +1,5 @@
 var tools = require('../tools')
+var fs = require('fs');
 
 const getFirstWord = string => {
     const firstWord = [];
@@ -9,17 +10,21 @@ const getFirstWord = string => {
     return firstWord.join('');
 };
 
-function parseCommand(command, showDebug) {
+async function parseCommand(command, showDebug) {
     if (showDebug) {
         tools.log("Parser recieved '"+ command +"'");
     }
     var commandName = getFirstWord(command);
     var args = command.replace(commandName + " ", "").trim();
+    if (!fs.existsSync(process.cwd() + '/game/cmd/'+ commandName +'.js')) {
+        console.log("\x1b[1m\x1b[31m%s\x1b[0m", "Unknown command ('"+ commandName + "')!");
+        return;
+    }
     try {
         var commandNeeded = require('./cmd/'+ commandName +'.js');
-        commandNeeded.main(args);
+        await commandNeeded.main(args);
     } catch (e) {
-        console.log("\x1b[1m\x1b[31m%s\x1b[0m", "Unknown command ('"+ command + "')!")
+        console.log("\x1b[1m\x1b[31m%s\x1b[0m", "An error occurred while running command '"+ command + "'.\n"+ e.message + "\n" + e.stack)
         if (showDebug) { tools.log(e.message) }
     }
     

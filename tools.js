@@ -11,12 +11,14 @@ const { config } = require('process');
 const fetch = require('node-fetch')
 const programVersionString = "1.0.0";
 
+
 function runShutdownProcesses(debug) {
     if (debug) {
         log("Shutdown command recieved!");
     }
-    if (fs.existsSync(process.cwd() + "/.tmp/")) {
-        fs.rmdirSync(process.cwd() + "/.tmp/", { recursive: true });
+    if (fs.existsSync(process.cwd() + "/.tmp/multiplayerCache.json")) {
+        //fs.rmdirSync(process.cwd() + "/.tmp/", { recursive: true });
+        fs.rmSync(process.cwd() + "/.tmp/multiplayerCache.json");
     }
 }
 
@@ -111,10 +113,19 @@ async function downloadVerFile() {
 
 async function downloadUpdateArchive() {
     tmpInit();
-    var verfileURL = "https://raw.githubusercontent.com/SejDevStuff/terminal-currency-game/main/update.zip";
-    await fetch(verfileURL)
-    .then(res => res.text())
-    .then(text => {fs.writeFileSync("./.tmp/update.zip", text)})
+    var http = require('https');
+    var fs = require('fs');
+
+    var download = function(url, dest, cb) {
+    var file = fs.createWriteStream(dest);
+    var request = http.get(url, function(response) {
+        response.pipe(file);
+        file.on('finish', function() {
+        file.close(cb);
+        });
+    });
+    }
+    download("https://raw.githubusercontent.com/SejDevStuff/terminal-currency-game/main/update.zip", process.cwd() + "/.tmp/update.zip", console.log("Downloaded Latest Update Pack"))
 }
 
 async function enableMultiplayer() {
@@ -146,5 +157,7 @@ module.exports = {
     returnVersionString,
     runShutdownProcesses,
     downloadUpdateArchive,
-    initDir
+    downloadVerFile,
+    initDir,
+    tmpInit
 }
