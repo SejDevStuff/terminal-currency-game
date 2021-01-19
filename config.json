@@ -1,6 +1,6 @@
 {
     "SHOW_DEBUG_MESSAGES":false,
-    "CHECK_FOR_UPDATES":false,
+    "CHECK_FOR_UPDATES":true,
     "START_WITH_MULTIPLAYER":false,
     "USERNAME":"TestUser"
 }

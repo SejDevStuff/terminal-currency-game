@@ -5,12 +5,26 @@
     File name: index.js
     File desc: Main body of game
 */
-var tools = require('./tools');
+
+const { default: decache } = require('decache');
+const cluster = require('cluster');
 try {
+    var tools = require('./tools');
+} catch (e) {
+    console.log("Could not initialise game - a critical game file refused to load.")
+}
+
+try {
+    var failed = tools.runStartupProcesses(showDebug);
+    if (failed == 0) {
+        console.log("Startup Checks Passed!");
+    } else {
+        tools._raiseFatalError("System startup interrupted!", "CRITICAL_FILES_MISSING", "Some critical system files do not exist. Startup interrupted.")
+        process.exit();
+    }
     var configFile = tools.getConfigFile();
     const fs = require('fs');
-    const parser = require('./game/parser');
-    const { DH_CHECK_P_NOT_PRIME } = require('constants');
+    var parser = require('./game/parser');
     const programVersionString = tools.returnVersionString();
     if (configFile.SHOW_DEBUG_MESSAGES == true) {
         tools.log("Debug messages are set to TRUE.");
@@ -25,6 +39,7 @@ try {
     } else {
         tools.disableMultiplayer();
     }
+    init();
     async function init() {
         try {
             if (configFile.CHECK_FOR_UPDATES == true) {
@@ -66,16 +81,8 @@ try {
         }
     }
 
-    function restart() {
-        const {spawn} = require('child_process');
-
-        console.log("restarting...");
-        tools.tmpInit();
-        const out = fs.openSync(logfile, 'a');
-        const err = fs.openSync(logfile, 'a');
-        const subprocess = spawn(process.argv[1], process.argv.slice(2), {detached: true, stdio: ['ignore', out, err]});
-
-        subprocess.unref();
+    function reloadProcess() {
+        console.log("[!] > This feature is temporarily disabled")
     }
 
     async function mainBody() {
@@ -106,7 +113,7 @@ try {
                     console.log("Debug mode: OFF");
                     return _prompt();
                 }
-                if (command.trim() == "reload") {restart();return;}
+                if (command.trim() == "reload") {reloadProcess(); return _prompt();}
                 if (command.trim() == "exit" || command.trim() == "bye" || command.trim() == "stop" || command.trim() == "end") {
                     if (showDebug) { tools.log("Running shutdown processes...") };
                     tools.runShutdownProcesses();
@@ -136,7 +143,7 @@ try {
             tools.runShutdownProcesses();
         }
     }
-    init();
+    
 } catch (e) {
     console.log("_ERROR_BEFORE_DEBUG_INIT\nDebug tools are not ready to handle the error.\nTreating like normal shutdown...");
     tools.runShutdownProcesses();

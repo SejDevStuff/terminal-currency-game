@@ -1,6 +1,7 @@
 var tools = require(process.cwd() + "/tools");
 var fs = require('fs');
 const extract = require('extract-zip');
+const { version } = require('os');
 
 function sleep(ms) {
     return new Promise((resolve) => {
@@ -21,6 +22,17 @@ function safeUpdate() {
         try {
             var fdir = fileList.entry[i].fileDirectory;
             var fname = fileList.entry[i].fileName;
+            var df = fileList.entry[i].delFile;
+            if (df == true) {
+                entriesBackedUp++;
+                if (fs.existsSync(process.cwd()+fdir+fname)) {
+                    console.log("["+ entriesBackedUp + "/" + entries + "] Removing '"+ fdir+fname+"'...");
+                    fs.rmSync(process.cwd()+fdir+fname)
+                } else {
+                    console.log("["+ entriesBackedUp + "/" + entries + "] Removal of '"+ fdir+fname+"' skipped, file does not exist.")
+                }
+                return;
+            }
             if (fs.existsSync(process.cwd()+fdir+fname)) {
                 entriesBackedUp++;
                 console.log("["+ entriesBackedUp + "/" + entries + "] Replacing '"+ fdir+fname+"'...");
@@ -28,6 +40,7 @@ function safeUpdate() {
             } else {
                 entriesBackedUp++;
                 console.log("["+ entriesBackedUp + "/" + entries + "] Creating new file '"+ fdir+fname+"'...");
+                tools.initDir(process.cwd()+fdir);
                 fs.copyFileSync(process.cwd() + "/.tmp/update_extract/" +fdir+fname, process.cwd()+fdir+fname);
             }
         } catch (e) {
@@ -76,8 +89,12 @@ async function main(args) {
 
     var body = fs.readFileSync(process.cwd() + "/.tmp/latest-verfile.json");
     var remoteVerFile = JSON.parse(body);
-
-    console.log("\x1b[1m\x1b[37m%s\x1b[0m", "Update Version: " + remoteVerFile.latestVersion + "\nUpdate Title: "+ remoteVerFile.versionData.main + "\nUpdate desc: " + remoteVerFile.versionData.sub)
+    var versionString = tools.returnVersionString();
+    if (versionString == remoteVerFile.latestVersion) {
+        console.log("An update is not needed!");
+        return;
+    }
+    console.log("\x1b[1m\x1b[37m%s\x1b[0m", "Update Version: " + remoteVerFile.latestVersion + ", Your version: " + versionString + "\nUpdate Title: "+ remoteVerFile.versionData.main + "\nUpdate desc: " + remoteVerFile.versionData.sub)
 
     function updatePrompt() {
         var updatePromptText = tools.input("Update? y or n: ").trim();

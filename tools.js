@@ -10,7 +10,35 @@ const fs = require('fs');
 const { config } = require('process');
 const fetch = require('node-fetch')
 const programVersionString = "1.0.0";
+const chalk = require('chalk');
 
+
+function _raiseFatalError(errorName, errorType, errorDesc) {
+    console.log(chalk.bgRedBright('=== FATAL GAME ERROR! ===')); 
+    console.log("ErrorType: "+ errorType + "\nErrorName: "+ errorName + "\nErrorDesc: "+ errorDesc);
+    console.log(chalk.redBright(chalk.italic("The program will now exit.")))
+    process.exit();
+}
+
+const filearray = ["/index.js", "/tools.js", "/game/", "/game/parser.js", "/config.json"];
+
+function runStartupProcesses(debug) {
+    if (debug) {
+        log("Running startup checks...");
+    }
+    var failed = 0;
+    for (var i=0; i < filearray.length; i++) {
+        if (fs.existsSync(process.cwd() + filearray[i])) {
+            if (debug) {
+                log("File exists: '"+ filearray[i] + "'");
+            }
+        } else {
+            failed++;
+            console.log("\nCritical File DOES NOT exist: '"+ filearray[i] + "'");
+        }
+    }
+    return failed;
+}
 
 function runShutdownProcesses(debug) {
     if (debug) {
@@ -159,5 +187,7 @@ module.exports = {
     downloadUpdateArchive,
     downloadVerFile,
     initDir,
-    tmpInit
+    tmpInit,
+    runStartupProcesses,
+    _raiseFatalError
 }

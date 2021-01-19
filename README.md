@@ -11,5 +11,6 @@ Please wait until we pass the beta versions and go to v1.0.0, where a release wi
 
 ## Update History
 ```
-18/01/2021 - Beta 1.4.0: Working 'update' command
+19/01/2021 - Beta 1.4.5: More additions/bugfixes to 'update' command.
+18/01/2021 - Beta 1.4.0: Working 'update' command and updated commands.md
 ```
