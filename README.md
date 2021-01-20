@@ -1,8 +1,6 @@
 # terminal-currency-game
-Terminal Currency Game - NODEJS
+Currency Game ran in the terminal or shell - Written in JS
 ---
-This originated from a Economy discord bot I made, this may just follow the trend of any other project and land in my project landfill unfinished, or it may take off and get a few versions released. I don't know.
-
 ### Need help?
 Go here: https://github.com/SejDevStuff/terminal-currency-game/blob/main/commands.md
 
