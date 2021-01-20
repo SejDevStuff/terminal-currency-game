@@ -164,6 +164,30 @@ async function enableMultiplayer() {
     fs.writeFileSync("./.tmp/multiplayerCache.json", JSON.stringify(multiplayerCache));
 }
 
+async function setupServer(ip) {
+    tmpInit();
+    const serverCache = {
+        ServerIP: ip
+    };
+    fs.writeFileSync("./.tmp/mpServer.json", JSON.stringify(serverCache));
+}
+
+function getServerIP() {
+    if (fs.existsSync("./.tmp/mpServer.json")) {
+        return JSON.parse(fs.readFileSync("./.tmp/mpServer.json").ServerIP)
+    } else {
+        return "0.0.0.0";
+    }
+}
+
+function getMultiplayerCache() {
+    if (fs.existsSync("./.tmp/multiplayerCache.json")) {
+        return JSON.parse(fs.readFileSync("./.tmp/multiplayerCache.json").multiplayerEnabled)
+    } else {
+        return false;
+    }
+}
+
 async function disableMultiplayer() {
     tmpInit();
     const multiplayerCache = {
@@ -189,5 +213,8 @@ module.exports = {
     initDir,
     tmpInit,
     runStartupProcesses,
-    _raiseFatalError
+    _raiseFatalError,
+    setupServer,
+    getServerIP,
+    getMultiplayerCache
 }

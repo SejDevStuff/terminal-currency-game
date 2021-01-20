@@ -22,6 +22,17 @@ async function parseCommand(command, showDebug) {
     }
     var commandName = getFirstWord(cleanCommand);
     var args = command.replace(commandName + " ", "").trim();
+
+    if (cleanCommand.startsWith("gm")) {
+        var multiplayerCache = tools.getMultiplayerCache();
+        if (multiplayerCache == true) {
+            var serverIP = tools.serverIP();
+            console.log("Playing multiplayer game")
+        } else {
+            console.log("Playing local game")
+        }
+    }
+
     if (!fs.existsSync(process.cwd() + '/game/cmd/'+ commandName +'.js')) {
         console.log("\x1b[1m\x1b[31m%s\x1b[0m", "Unknown command ('"+ commandName + "')!");
         return;
