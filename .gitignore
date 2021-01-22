@@ -4,3 +4,4 @@ node_modules/
 # Unneeded program folders
 .tmp/
 errors/
+users/

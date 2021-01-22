@@ -1,6 +1,11 @@
 # Terminal game commands
 These commands are stored by no specific order.
 ---
+### server
+The server command allows you to connect to multiplayer servers and play on them!
+To list your saved servers, do ``server --list``, to save an IP, do ``server --save`` and to connect to a server, do ``server --connect <IP>``
+**Errors during execution:** None reported so far
+
 ### update
 Update automatically downloads the latest update archive and then backs up all files that it will change, when this is successful it proceeds to replace files with newer versions and create new files if necessary.
 Optional arguments: "--skip-download" will skip the download if you have your own update.zip file.

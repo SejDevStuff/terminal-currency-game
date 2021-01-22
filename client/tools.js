@@ -44,9 +44,8 @@ function runShutdownProcesses(debug) {
     if (debug) {
         log("Shutdown command recieved!");
     }
-    if (fs.existsSync(process.cwd() + "/.tmp/multiplayerCache.json")) {
-        //fs.rmdirSync(process.cwd() + "/.tmp/", { recursive: true });
-        fs.rmSync(process.cwd() + "/.tmp/multiplayerCache.json");
+    if (fs.existsSync(process.cwd()+"/.tmp/currentServerSession.json")) {
+        fs.rmSync(process.cwd()+"/.tmp/currentServerSession.json");
     }
 }
 
@@ -182,7 +181,10 @@ function getServerIP() {
 
 function getMultiplayerCache() {
     if (fs.existsSync("./.tmp/multiplayerCache.json")) {
-        return JSON.parse(fs.readFileSync("./.tmp/multiplayerCache.json").multiplayerEnabled)
+        var mC = JSON.parse(fs.readFileSync(process.cwd() + "/.tmp/multiplayerCache.json"))
+        if (mC.multiplayerEnabled == true) {
+            return true;
+        }
     } else {
         return false;
     }
