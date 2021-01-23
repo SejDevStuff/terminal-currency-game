@@ -1,4 +1,5 @@
 {
 	"LISTEN_PORT": 6162,
-	"ROOT_VIEW_MSG": "Hey, I am your ToolsEconomy server!"
+	"ROOT_VIEW_MSG": "Hey, I am your ToolsEconomy server!",
+	"MALFORMED_REQUEST_SHUTDOWN_THRESHOLD":"100"
 }

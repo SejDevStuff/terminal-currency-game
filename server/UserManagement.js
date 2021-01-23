@@ -1,5 +1,15 @@
 var fs = require('fs');
+const { log } = require('../client/tools');
 var tools = require('./tools');
+
+const sResponse = {
+    status: "AUTH_SUCCESS",
+    responseType: "serverResponse"
+};
+const fResponse = {
+    status: "AUTH_FAILED",
+    responseType: "serverResponse"
+};
 
 function authoriseUserRequest(username, passwordProvided) {
     if (!fs.existsSync("./users/"+username+"/auth.json")) { return false; }
@@ -8,14 +18,6 @@ function authoriseUserRequest(username, passwordProvided) {
 }
 
 function frontEndAuth(username, password) {
-    const sResponse = {
-        status: "AUTH_SUCCESS",
-        responseType: "serverResponse"
-    };
-    const fResponse = {
-        status: "AUTH_FAILED",
-        responseType: "serverResponse"
-    };
     var auth = authoriseUserRequest(username, password);
     if (auth == true) {
         return sResponse;
@@ -60,7 +62,7 @@ function setupUser(username) {
         };
         return JSON.stringify(response);
     }
-    var password = Math.random().toString(36).substr(2);
+    var password = Math.random().toString(36).slice(2)
     const userAuth = {
         username: username,
         password: password
