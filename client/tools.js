@@ -47,6 +47,9 @@ function runShutdownProcesses(debug) {
     if (fs.existsSync(process.cwd()+"/.tmp/currentServerSession.json")) {
         fs.rmSync(process.cwd()+"/.tmp/currentServerSession.json");
     }
+    if (fs.existsSync(process.cwd()+"/.tmp/multiplayerCache.json")) {
+        fs.rmSync(process.cwd()+"/.tmp/multiplayerCache.json");
+    }
 }
 
 function returnVersionString() {
@@ -180,8 +183,8 @@ function getServerIP() {
 }
 
 function getMultiplayerCache() {
-    if (fs.existsSync("./.tmp/multiplayerCache.json")) {
-        var mC = JSON.parse(fs.readFileSync(process.cwd() + "/.tmp/multiplayerCache.json"))
+    if (fs.existsSync(process.cwd()+"/.tmp/multiplayerCache.json")) {
+        var mC = JSON.parse(fs.readFileSync(process.cwd() + "/.tmp/multiplayerCache.json", 'utf-8'))
         if (mC.multiplayerEnabled == true) {
             return true;
         }

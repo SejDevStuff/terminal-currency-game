@@ -8,10 +8,7 @@ async function request(url) {
         .then(text => {return text;})
         return res;
     } catch (e) {
-        const response = {
-            data: "cannot_reach"
-        };
-        return JSON.stringify(response);
+        return "Err";
     }
 }
 

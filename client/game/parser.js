@@ -15,21 +15,35 @@ async function parseCommand(command, showDebug) {
     if (showDebug) {
         tools.log("Parser recieved '"+ command +"'");
     }
-    var cleanCommand_p1 = command.split('/').join('');
-    var cleanCommand = cleanCommand_p1.split('.').join('');
+    var cleanCommand = command.replace(/[.,\"\'\/£#!$%\^&\*;:{}=\\_`~()]/g,"").trim();;
     if (cleanCommand == "") {
         return;
     }
     var commandName = getFirstWord(cleanCommand);
     var args = command.replace(commandName + " ", "").trim();
 
-    if (cleanCommand.startsWith("gm")) {
+    if (cleanCommand.startsWith("gm ")) {
         var multiplayerCache = tools.getMultiplayerCache();
-        if (multiplayerCache == true) {
-            var serverIP = tools.serverIP();
-            console.log("Playing multiplayer game")
+        if (multiplayerCache == true && fs.existsSync(process.cwd()+"/.tmp/currentServerSession.json")) {
+            var serverMan = require('./ServerManager');
+            var css = JSON.parse(fs.readFileSync(process.cwd()+"/.tmp/currentServerSession.json"));
+            var ping = await serverMan.request(css.ip+"/ping");
+            if (ping !== "Pong! TerminalEconomy") {
+                console.log("Could not connect to server, is it down?");
+                return;
+            }
+            const buff = Buffer.from(cleanCommand, 'utf-8');
+            const base64 = buff.toString('base64');
+            var res = JSON.parse(await serverMan.request(css.ip+"/runCommand?username="+css.username+"&password="+css.password+"&command="+base64+"&version="+tools.returnVersionString()))
+            if (res.responseType !== "serverResponse") {
+                console.log("The response recieved is not from a valid TerminalEconomy server");
+                return;
+            }
+            console.log(res.userMessage);
+            return;
         } else {
-            console.log("Playing local game")
+            console.log("Playing local game");
+            return;
         }
     }
 

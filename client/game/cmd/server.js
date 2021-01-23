@@ -2,8 +2,14 @@ const fs = require('fs');
 const tools = require(process.cwd() + "/tools");
 
 async function main(args) {
-    var multiplayer = tools.getMultiplayerCache();
-    if (multiplayer == false) {
+    var multiplayer = JSON.parse(fs.readFileSync(process.cwd()+"/.tmp/multiplayerCache.json"));
+    if (multiplayer.multiplayerEnabled == true) {
+        var multiplayerHumanReadableString = "Enabled";
+    } else {
+        var multiplayerHumanReadableString = "Disabled";
+    }
+    console.log("Multiplayer is set to '"+multiplayerHumanReadableString+"'")
+    if (multiplayer.multiplayerEnabled == false) {
         console.log("Please enable multiplayer with 'mp e'");
         return;
     }
@@ -59,12 +65,19 @@ async function main(args) {
             console.log("Please provide an IP! Syntax: 'server --connect IPHERE'");
             return;
         }
-        var safeIP = ip.replace(/[\/\\]/g, "");
+        var safeIP = ip.replace(/[.,\"\'\/£#!$%\^&\*;:{}=\-_`~()]/g,"").trim();
         var serverMan = require(process.cwd() + "/game/ServerManager.js");
+
+        var ping = await serverMan.request(ip+"/ping");
+        if (ping !== "Pong! TerminalEconomy") {
+            console.log("Could not connect to server, is it down?");
+            return;
+        }
+
         if (!fs.existsSync(process.cwd() + "/.tmp/serverCache/")) { fs.mkdirSync(process.cwd() + "/.tmp/serverCache/") }
         if (fs.existsSync(process.cwd() + "/.tmp/serverCache/"+safeIP+".json")) {
             var sC = JSON.parse(fs.readFileSync(process.cwd() + "/.tmp/serverCache/"+safeIP+".json"));
-            var response = JSON.parse(await serverMan.request(ip+"/authCheck?username="+ sC.username + "&password=" + sC.password));
+            var response = JSON.parse(await serverMan.request(ip+"/authCheck?username="+ sC.uname + "&password=" + sC.pass));
             if (!response.responseType == "serverResponse") {
                 console.log("Could not ping server :/");
                 return;
@@ -72,6 +85,8 @@ async function main(args) {
                 if (response.status == "AUTH_SUCCESS") {
                     console.log("Connected to server! ("+ip+")");
                     const connectionData = {
+                        username: sC.uname,
+                        password: sC.pass,
                         ip: ip
                     };
                     fs.writeFileSync(process.cwd()+"/.tmp/currentServerSession.json", JSON.stringify(connectionData))
@@ -82,7 +97,8 @@ async function main(args) {
         } else {
             console.log("Setting you up as a new user...");
             var config = tools.getConfigFile();
-            var username = config.USERNAME;
+            var username = config.USERNAME.replace(/[.,\"\'\/£#!$%\^&\*;:{}=\-_`~()]/g,"").trim();
+            console.log("Cleaning Username: "+ config.USERNAME +" -> "+ username);
             var existsUserURL = ip+"/existUser?username="+username;
             var createUserURL = ip+"/setupUser?username="+username;
             var existsUserRES = JSON.parse(await serverMan.request(existsUserURL));
@@ -103,7 +119,7 @@ async function main(args) {
             if (createUserRES.status == "USER_CREATION_SUCCESSFUL") {
                 var pswProvided = createUserRES.password;
                 const userCacheData = {
-                    ip: ip,
+                    uname: username,
                     pass: pswProvided
                 };
                 fs.writeFileSync(process.cwd() + "/.tmp/serverCache/"+safeIP+".json", JSON.stringify(userCacheData));
@@ -113,6 +129,14 @@ async function main(args) {
             }
             return;
         }
+    }
+    if (args == "--disconnect") {
+        if (fs.existsSync(process.cwd()+"/.tmp/currentServerSession.json")) {
+            fs.rmSync(process.cwd()+"/.tmp/currentServerSession.json");
+            console.log("Disconnected.");
+            return;
+        }
+        console.log("Nothing to disconnect from!")
     }
 }
 

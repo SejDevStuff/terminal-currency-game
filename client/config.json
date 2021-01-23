@@ -2,5 +2,6 @@
     "SHOW_DEBUG_MESSAGES":false,
     "CHECK_FOR_UPDATES":true,
     "START_WITH_MULTIPLAYER":false,
-    "USERNAME":"TestUser"
+    "USERNAME":"TestUser",
+    "GAME_COMMAND_PREFIX":"gm "
 }
