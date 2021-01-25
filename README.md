@@ -1,6 +1,13 @@
 # terminal-currency-game
 Currency Game ran in the terminal or shell - Written in JS
 ---
+## How to install
+Make sure you have nodejs and npm installed
+Get a server.zip or client.zip from the releases area [handy link](https://github.com/SejDevStuff/terminal-currency-game/releases). Extract this to a folder, and do ``npm install``. Once this
+command is completed, do ``npm start`` and you are off to the races! Installation is that simple.
+
+REMEMBER: DO NOT download this by cloning the repo, repo commits always tend to have some unfinished work in them.
+
 ### The .tmp/ directory
 The game will automatically make a ``.tmp/`` directory if one does not exist, although the name is misleading ``.tmp/`` stores all of your game data such as your servers and if you are playing on singleplayer, your stats. Its a bit like the ``.minecraft/`` in the game Minecraft. Unless you want to reset your progress, I suggest you do not remove or edit the .tmp/ directory. The game will automatically remove un-needed temporarily files on a successful shutdown so there is no need for you to remove it.
 

@@ -3,7 +3,8 @@ These commands are stored by no specific order.
 ---
 ### server
 The server command allows you to connect to multiplayer servers and play on them!
-To list your saved servers, do ``server --list``, to save an IP, do ``server --save`` and to connect to a server, do ``server --connect <IP>``
+To list your saved servers, do ``server --list``, to save an IP, do ``server --save`` and to connect to a server, do ``server --connect <IP>``. NOTE: Once connected to a server, all commands will be redirected to that server --> to disconnect, do ``server --disconnect``
+
 **Errors during execution:** None reported so far
 
 ### update

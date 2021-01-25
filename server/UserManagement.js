@@ -1,5 +1,4 @@
 var fs = require('fs');
-const { log } = require('../client/tools');
 var tools = require('./tools');
 
 const sResponse = {

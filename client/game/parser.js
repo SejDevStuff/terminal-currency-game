@@ -1,7 +1,7 @@
 var tools = require('../tools')
 var fs = require('fs');
 const decache = require('decache');
-
+var cfg = tools.getConfigFile();
 const getFirstWord = string => {
     const firstWord = [];
     for (let i = 0; i < string.length; i += 1) {
@@ -22,7 +22,7 @@ async function parseCommand(command, showDebug) {
     var commandName = getFirstWord(cleanCommand);
     var args = command.replace(commandName + " ", "").trim();
 
-    if (cleanCommand.startsWith("gm ")) {
+    if (cleanCommand.startsWith(cfg.GAME_COMMAND_PREFIX)) {
         var multiplayerCache = tools.getMultiplayerCache();
         if (multiplayerCache == true && fs.existsSync(process.cwd()+"/.tmp/currentServerSession.json")) {
             var serverMan = require('./ServerManager');
