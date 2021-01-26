@@ -9,13 +9,20 @@ MaliceBlocker has a series of checks which it matches each request against. It h
 MaliceBlocker tries to be as non-disk-intensive as possible, but there are times where it writes to the disk, these include every request made and every malicious request made.
 
 **How does it block IPs?**<br />
-MaliceBlocker creates a file in /mb_data/blocked/ with the IP that is blocked, the rest of the server will always check if the request IP exists in this directory and if so, it will ignore the request providing no console output or response. This will create an endless loading phase of the request and eventually it times out. The server does this because a) it wants to ignore this request completely without using up any resources or the point of blocking is defeated and b) if an attacker gets no response from the server, they may believe that their attack has affected the server where really nothing much happened and they were blocked.
+MaliceBlocker creates a file in /mbdata/blocked/ with the IP that is blocked, the rest of the server will always check if the request IP exists in this directory and if so, it will end the request with an Error 500.
 
 **How do I unblock someone?**<br />
 MaliceBlocker will NOT automatically unblock someone, to unblock someone, follow these steps:
 
-- Get your IP (lets say its 12.34.56.78)<br />
-- Remove all punctuation from the IP, this includes "." and "/" and ":" and any other non alphanumeric character, so for out IP its (12345678). Remember this new IP<br />
-- Look for the file /mb_data/blocked/IPHERE.json where IPHERE is the IP without any punctuation.<br />
+- Get the IP of the person you want to unblock (lets say its 12.34.56.78)<br />
+- Remove all punctuation from the IP, this includes "." and "/" and ":" and any other non alphanumeric character, so for our IP its (12345678). Remember this new IP<br />
+- Look for the file /mbdata/blocked/IPHERE.json where IPHERE is the IP without any punctuation.<br />
 If you can't find it, that IP was not blocked.<br />
 If you can, delete the file, the IP is now unblocked!
+
+**How do I know someone is blocked?**<br />
+You will see the following message in the console:
+```
+[MaliceBlocker] SEVERE: BLOCKED IP iphere. Met or exceeded failing one or more limits for checknamehere
+Until unblocked, the server will ignore any requests from this user. 
+```

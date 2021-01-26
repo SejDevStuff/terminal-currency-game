@@ -25,8 +25,10 @@ app.get('/runCommand', function (req, res) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         mb.mbStore(ip);
         if (mb.mbIsBlocked(ip) == true) {
+            res.end()
             return;
         }
+        mb.mbReqInc(ip);
         var usernameProvided = req.query.username;
         var passwordProvided = req.query.password;
         var command = req.query.command;
@@ -47,8 +49,10 @@ app.get('/authCheck', function (req, res) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         mb.mbStore(ip);
         if (mb.mbIsBlocked(ip) == true) {
+            res.end()
             return;
         }
+        mb.mbReqInc(ip);
         var usernameProvided = req.query.username;
         var passwordProvided = req.query.password;
         tools.logRequestRecieved("AUTH_CHECK", usernameProvided);
@@ -65,8 +69,10 @@ app.get('/ping', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     mb.mbStore(ip);
     if (mb.mbIsBlocked(ip) == true) {
+        res.end()
         return;
     }
+    mb.mbReqInc(ip);
     res.send("Pong! TerminalEconomy");
 });
 
@@ -76,8 +82,10 @@ app.get('/getStats', function (req, res) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         mb.mbStore(ip);
         if (mb.mbIsBlocked(ip) == true) {
+            res.end()
             return;
         }
+        mb.mbReqInc(ip);
         var usernameProvided = req.query.username;
         var passwordProvided = req.query.password;
         tools.logRequestRecieved("GET_STATS", usernameProvided);
@@ -95,8 +103,10 @@ app.get('/existUser', function (req, res) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         mb.mbStore(ip);
         if (mb.mbIsBlocked(ip) == true) {
+            res.end()
             return;
         }
+        mb.mbReqInc(ip);
         var usernameProvided = req.query.username;
         tools.logRequestRecieved("EXISTING_USER_CHECK", usernameProvided);
         res.send(usermanagement.existingUserCheck(usernameProvided));
@@ -114,8 +124,10 @@ app.get('/setupUser', function (req, res) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         mb.mbStore(ip);
         if (mb.mbIsBlocked(ip) == true) {
+            res.end()
             return;
         }
+        mb.mbReqInc(ip);
         var usernameProvided = req.query.username;
         tools.logRequestRecieved("SETUP_USER", usernameProvided);
         res.send(usermanagement.setupUser(usernameProvided));
@@ -132,8 +144,10 @@ app.get('*', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     mb.mbStore(ip);
     if (mb.mbIsBlocked(ip) == true) {
+        res.end()
         return;
     }
+    mb.mbReqInc(ip);
     res.send(ROOT_VIEW_MSG);
 });
 
